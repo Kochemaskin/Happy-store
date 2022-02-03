@@ -2,7 +2,7 @@ package ru.happy.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.happy.entity.Product;
+import ru.happy.entities.Product;
 
 import java.math.BigDecimal;
 import java.util.List;
