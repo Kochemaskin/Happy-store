@@ -1,19 +1,16 @@
 package ru.happy.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "products")
-@NoArgsConstructor
-@AllArgsConstructor
-public class Product {
+@Table(name = "roles")
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,14 +20,11 @@ public class Product {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "price")
-    private Integer price;
-
-    @Column(name = "created_at")
     @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    @CreationTimestamp
     private LocalDateTime updatedAt;
 }

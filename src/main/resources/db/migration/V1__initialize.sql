@@ -1,10 +1,10 @@
-CREATE TABLE products (
+create TABLE products (
     id serial NOT NULL primary key,
     name varchar NULL,
     price float8 NULL
 );
 
-INSERT INTO products (name,price) VALUES
+insert into products (name,price) values
         ('bread',100),
         ('cheese',320),
         ('milk',65);
