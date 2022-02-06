@@ -1,10 +1,12 @@
 CREATE TABLE products (
-    id serial NOT NULL primary key,
-    name varchar NULL,
-    price float8 NULL
+    id              bigserial primary key,
+    title           VARCHAR(255),
+    price           int,
+    created_at      timestamp default current_timestamp,
+    modified_at     timestamp default current_timestamp
 );
 
-INSERT INTO products (name,price) VALUES
+INSERT INTO products (title,price) VALUES
         ('bread',100),
         ('cheese',320),
         ('milk',65);

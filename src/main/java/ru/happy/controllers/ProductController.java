@@ -1,63 +1,49 @@
 package ru.happy.controllers;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import ru.happy.converters.ProductConverter;
 import ru.happy.dto.ProductDto;
-import ru.happy.entities.Product;
+import ru.happy.entities.specifications.ProductSpecification;
 import ru.happy.exceptions.ResourceNotFoundException;
 import ru.happy.services.ProductService;
-import ru.happy.validators.ProductValidator;
 
-@Controller
-@AllArgsConstructor
-@RequestMapping("/products")
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/products")
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductConverter productConverter;
-    private final ProductValidator productValidator;
 
     @GetMapping
-    public Page<ProductDto> getAllProducts(
-            @RequestParam(name = "p", defaultValue = "1") Integer page,
-            @RequestParam(name = "min_price", required = false) Integer minPrice,
-            @RequestParam(name = "max_price", required = false) Integer maxPrice,
-            @RequestParam(name = "title_part", required = false) String titlePart
-    ) {
-        if (page < 1) {
-            page = 1;
-        }
-        return productService.findAll(minPrice, maxPrice, titlePart, page).map(
-                p -> productConverter.entityToDto(p)
-        );
+    public Page<ProductDto> getAllProducts(@RequestParam MultiValueMap<String, String> params,
+                                           @RequestParam(defaultValue = "0", name = "page") Integer page,
+                                           @RequestParam(defaultValue = "3", name = "count") Integer count) {
+
+        return productService.getProductPage(ProductSpecification.build(params), page, count);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductDto addProduct(@RequestBody ProductDto productDto) {
+        return productService.saveOrUpdate(productDto);
+    }
+
+    @PutMapping
+    public ProductDto modifiedProduct(@RequestBody ProductDto productDto) {
+        return productService.saveOrUpdate(productDto);
     }
 
     @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable Long id) {
-        Product product = productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
-        return productConverter.entityToDto(product);
+        return productService.getProductDtoById(id).orElseThrow(() -> new ResourceNotFoundException("Product by ID: " + id + " not found"));
     }
 
-    @PostMapping
-    public ProductDto saveNewProduct(@RequestBody ProductDto productDto) {
-        productValidator.validate(productDto);
-        Product product = productConverter.dtoToEntity(productDto);
-        product = productService.save(product);
-        return productConverter.entityToDto(product);
-    }
 
-    @PutMapping
-    public ProductDto updateProduct(@RequestBody ProductDto productDto) {
-        productValidator.validate(productDto);
-        Product product = productService.update(productDto);
-        return productConverter.entityToDto(product);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
-        productService.deleteById(id);
+    @DeleteMapping
+    public void deleteProductById(@RequestParam Long id) {
+        productService.deleteProductById(id);
     }
 }
