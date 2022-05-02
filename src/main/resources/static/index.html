@@ -66,6 +66,7 @@
 
     <nav>
         <ul class="pagination">
+            <li ng-class="productsList.first ? 'page-item disabled' : 'page-item'"><a class="page-link" ng-click="changePage(productsList.first)"href="">В начало</a></li>
             <li ng-class="productsList.first ? 'page-item disabled' : 'page-item'"><a class="page-link" ng-click="changePage(productsList.number-1)"href="">Предыдущая</a></li>
             <li ng-class="productsList.number==pageIndex ? 'page-item active' : 'page-item'" ng-repeat="pageIndex in paginationArray">
                 <a id="pagelink-{{$index}}" class="page-link" ng-click="changePage(pageIndex)" href="">{{pageIndex + 1}}</a>
