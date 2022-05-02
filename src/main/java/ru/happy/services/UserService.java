@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.happy.entities.Role;
 import ru.happy.entities.User;
+import ru.happy.entities.dto.UserDto;
 import ru.happy.repositories.UserRepository;
 
 import java.util.Collection;

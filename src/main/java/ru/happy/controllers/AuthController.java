@@ -10,6 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.happy.configs.JwtTokenUtil;
+import ru.happy.entities.dto.UserDto;
+import ru.happy.entities.dto.UserInfoDto;
 import ru.happy.entities.jwt.JwtRequest;
 import ru.happy.entities.jwt.JwtResponse;
 import ru.happy.exceptions.MarketError;

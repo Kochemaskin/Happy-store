@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.happy.beans.Address;
 import ru.happy.entities.User;
+import ru.happy.entities.dto.OrderDto;
 import ru.happy.exceptions.ResourceNotFoundException;
 import ru.happy.services.OrderService;
 import ru.happy.services.UserService;
