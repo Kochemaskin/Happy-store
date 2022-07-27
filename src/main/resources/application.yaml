@@ -5,9 +5,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=happymarket
-    username: postgres
-    password: postgres
+    url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL
+    username: sa
+    password:
   jpa:
   show-sql: true
   properties:
