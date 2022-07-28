@@ -1,4 +1,4 @@
-package ru.happy.entities.jwt;
+package ru.happy.dto;
 
 import lombok.Data;
 

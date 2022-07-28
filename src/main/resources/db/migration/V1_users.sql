@@ -1,11 +1,24 @@
-create TABLE users (
+create table users (
     id                      bigserial primary key,
     username                varchar(30) not null unique,
     password                varchar(80) not null,
     alias                   varchar(255) not null,
     email                   varchar(50) unique,
+    created_at              timestamp default current_timestamp,
+    updated_at              timestamp default current_timestamp
 );
 
+create table roles (
+    id                      bigserial primary key,
+    name                    varchar(50) not null unique,
+    created_at              timestamp default current_timestamp,
+    updated_at              timestamp default current_timestamp
+);
+
+insert into roles (name)
+values
+('ROLE_USER'),
+('ROLE_ADMIN');
 
 insert into users (username, password, alias, email)
 values

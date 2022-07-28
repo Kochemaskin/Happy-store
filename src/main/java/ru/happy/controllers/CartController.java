@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.happy.beans.Cart;
-import ru.happy.entities.dto.CartDto;
+import ru.happy.dto.CartDto;
+
 
 @RestController
 @RequestMapping("/api/v1/cart")

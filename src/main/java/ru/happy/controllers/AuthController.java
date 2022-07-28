@@ -9,22 +9,20 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import ru.happy.configs.JwtTokenUtil;
-import ru.happy.entities.dto.UserDto;
-import ru.happy.entities.dto.UserInfoDto;
-import ru.happy.entities.jwt.JwtRequest;
-import ru.happy.entities.jwt.JwtResponse;
+import ru.happy.beans.JwtTokenUtil;
+import ru.happy.dto.JwtRequest;
+import ru.happy.dto.JwtResponse;
+import ru.happy.dto.UserInfoDto;
 import ru.happy.exceptions.MarketError;
 import ru.happy.services.UserService;
 
 import java.security.Principal;
 
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
-
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
@@ -43,17 +41,5 @@ public class AuthController {
     @GetMapping("/alias")
     public UserInfoDto getUserName(Principal principal) {
         return new UserInfoDto(userService.getAliasByUserName(principal.getName()));
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
-        try {
-            userService.registerNewUser(userDto);
-            return ResponseEntity.ok(HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new MarketError(HttpStatus.BAD_REQUEST.value(), "Username or Email already exists"), HttpStatus.BAD_REQUEST);
-        }
-
-
     }
 }

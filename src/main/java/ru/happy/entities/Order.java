@@ -1,13 +1,11 @@
 package ru.happy.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import ru.happy.beans.Cart;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,42 +15,21 @@ import java.util.List;
 @Table(name = "orders")
 public class Order {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    Long user_id;
 
-    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<OrderItem> items;
+    @JsonBackReference
+    @OneToMany(mappedBy = "orderOwner")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    List<OrderItem> items;
 
-    @Column(name = "total_price")
-    private Integer totalPrice;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "phone")
-    private String phone;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    public Order(Cart cart, User user) {
-        this.user = user;
+    public Order(Long user_id) {
+        this.user_id = user_id;
         items = new ArrayList<>();
-        this.totalPrice = cart.getTotalPrice();
-        cart.getItems().forEach(oi -> {
-            oi.setOrderOwner(this);
-            this.items.add(oi);
-        });
     }
 }

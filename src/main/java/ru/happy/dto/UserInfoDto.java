@@ -1,4 +1,4 @@
-package ru.happy.entities.dto;
+package ru.happy.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -7,12 +7,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.happy.entities.Role;
 import ru.happy.entities.User;
-import ru.happy.entities.dto.UserDto;
 import ru.happy.repositories.UserRepository;
 
 import java.util.Collection;
@@ -24,9 +22,6 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
-    private final RoleService roleService;
-    private final BCryptPasswordEncoder encoder;
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -49,16 +44,5 @@ public class UserService implements UserDetailsService {
 
     public Long getIdByUserName(String userName) {
         return findByUsername(userName).get().getId();
-    }
-
-    public void registerNewUser(UserDto userDto) {
-        userDto.setPassword(getPassHash(userDto.getPassword()));
-        User newUser = new User(userDto);
-        newUser.getRoles().add(roleService.getRoleForNewUser());
-        userRepository.save(newUser);
-    }
-
-    private String getPassHash(String pass) {
-        return encoder.encode(pass);
     }
 }

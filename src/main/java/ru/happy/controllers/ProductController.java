@@ -1,19 +1,18 @@
 package ru.happy.controllers;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import ru.happy.entities.dto.ProductDto;
+import ru.happy.dto.ProductDto;
 import ru.happy.exceptions.ResourceNotFoundException;
 import ru.happy.repositories.specifications.ProductSpecifications;
 import ru.happy.services.ProductService;
 
-@Controller
-@AllArgsConstructor
-@RequestMapping("/products")
+@RestController
+@RequestMapping("/api/v1/products")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;

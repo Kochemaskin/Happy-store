@@ -1,4 +1,4 @@
-package ru.happy.configs;
+package ru.happy.beans;
 
 
 import io.jsonwebtoken.Claims;
@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenUtil {
-
     @Value("${jwt.secret}")
     private String secret;
 
@@ -30,7 +29,7 @@ public class JwtTokenUtil {
         claims.put("roles", rolesList);
 
         Date issuedDate = new Date();
-        Date expiredDate = new Date(issuedDate.getTime() + 60 * 60 * 10000);
+        Date expiredDate = new Date(issuedDate.getTime() + 20 * 60 * 1000);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())

@@ -1,4 +1,4 @@
-package ru.happy.entities.dto;
+package ru.happy.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,14 +14,12 @@ public class OrderDto {
     private Long id;
     private List<OrderItemDto> items;
     private int totalPrice;
-    private String address;
-    private String createdAt;
 
     public OrderDto(Order order) {
         this.id = order.getId();
-        this.totalPrice = order.getTotalPrice();
-        this.address = order.getAddress();
-        this.createdAt = order.getCreatedAt().toString();
         this.items = order.getItems().stream().map(OrderItemDto::new).collect(Collectors.toList());
+        for (OrderItemDto item : this.items) {
+            totalPrice += item.getPricePerProduct() * item.getQuantity();
+        }
     }
 }

@@ -15,7 +15,7 @@
 <body>
 
 <div class="container" ng-controller="indexController">
-    <h1>Happy</h1>
+    <h1>Happy Market</h1>
 
     <div class="mb-3 text-center" ng-show="!authorized">
         <form class="form-signin" ng-submit="tryToAuth()" style="max-width: 350px; padding: 15px; margin: 0 auto;">
@@ -75,7 +75,7 @@
                                 </tfoot>
                                 <tbody>
                                 <tr ng-repeat="item in order.items">
-                                    <td>{{item.productName}}</td>
+                                    <td>{{item.productTitle}}</td>
                                     <td>{{item.quantity}}</td>
                                     <td>{{item.pricePerProduct}}</td>
                                     <td>{{item.quantity + ' x ' + item.pricePerProduct + ' = ' + item.price}}</td>
@@ -92,8 +92,8 @@
         <form novalidate ng-submit="fillTable()">
             <div class="form-group row">
                 <div class="form-group col-md-3">
-                    <label for="filterName">Название товара</label>
-                    <input class="form-control" type="text" ng-model="filter.name" id="filterName">
+                    <label for="filterTitle">Название товара</label>
+                    <input class="form-control" type="text" ng-model="filter.title" id="filterTitle">
                 </div>
                 <div class="form-group col-md-3">
                     <label for="filterMinPrice">Минимальная цена</label>
@@ -123,7 +123,7 @@
             <tbody>
             <tr ng-repeat="p in productsList.content">
                 <td>{{p.id}}</td>
-                <td>{{p.name}}</td>
+                <td>{{p.title}}</td>
                 <td>{{p.price}}</td>
                 <td>
                     <button class="btn btn-primary" ng-click="addToCartById(p.id)">Добавить в корзину</button>
@@ -147,8 +147,8 @@
         <h3>Добавить новый товар</h3>
         <form novalidate ng-submit="submitCreateNewProduct()">
             <div class="form-group col-md-6">
-                <label for="newProductName">Название</label>
-                <input class="form-control" type="text" ng-model="newProduct.name" id="newProductName">
+                <label for="newProductTitle">Название</label>
+                <input class="form-control" type="text" ng-model="newProduct.title" id="newProductTitle">
             </div>
             <div class="form-group col-md-6">
                 <label for="newProductPrice">Цена</label>
@@ -181,7 +181,7 @@
                 <tbody>
                 <tr ng-repeat="oi in cartList.items">
                     <!--            <td>{{oi.id}}</td>-->
-                    <td>{{oi.productName}}</td>
+                    <td>{{oi.productTitle}}</td>
                     <td>
                         <div class="input-group md-3" style="width: 120px">
                             <div class="input-group-prepend">
