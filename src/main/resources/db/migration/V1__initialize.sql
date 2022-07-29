@@ -12,6 +12,6 @@ insert into products (title,price) values
         ('milk',65),
         ('Chocolate', 50),
         ('Salt', 17),
-        ('Chicken', 100)
+        ('Chicken', 100),
         ('Potato', 7),
         ('Cucumber', 4);
