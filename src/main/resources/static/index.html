@@ -9,35 +9,36 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
-    <script src="init.js"></script>
+    <script src="index.js"></script>
 </head>
 
 <body>
 
 <div class="container" ng-controller="indexController">
-    <h1>Happy Market</h1>
+    <h1>Market</h1>
 
     <div class="mb-3 text-center" ng-show="!authorized">
         <form class="form-signin" ng-submit="tryToAuth()" style="max-width: 350px; padding: 15px; margin: 0 auto;">
-            <h1 class="h3 mb-3 font-weight-normal">Пожалуйста войдите</h1>
-            <label for="inputUsername" class="sr-only">Имя пользователя</label>
+            <h1 class="h3 mb-3 font-weight-normal">Welcome</h1>
+            <label for="inputUsername" class="sr-only">User name</label>
             <input type="text" ng-model="user.username" id="inputUsername" class="form-control"
-                   placeholder="Имя пользователя" style="margin-bottom: 10px;" required="">
-            <label for="inputPassword" class="sr-only">Пароль</label>
-            <input type="password" ng-model="user.password" id="inputPassword" class="form-control" placeholder="Пароль"
+                   placeholder="User name" style="margin-bottom: 10px;" required="">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" ng-model="user.password" id="inputPassword" class="form-control"
+                   placeholder="Password"
                    style="margin-bottom: 10px;" required="">
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
-            <p class="mt-5 mb-3 text-muted">© GeekBrains 2021</p>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+            <p class="mt-5 mb-3 text-muted">2022</p>
         </form>
     </div>
     <div ng-show="authorized">
-        <p>Добро пожаловать: {{userInfo.alias}}</p>
-        <h3>Список заказов</h3>
+        <p>Welcome: {{userInfo.alias}}</p>
+        <h3>Orders list</h3>
         <table class="table table-hover" cellpadding="0" cellspacing="0">
             <thead>
             <tr>
                 <td>ID</td>
-                <td>Стоимость</td>
+                <td>Price</td>
                 <td></td>
             </tr>
             </thead>
@@ -46,8 +47,9 @@
                 <td>{{order.id}}</td>
                 <td>{{order.totalPrice}}</td>
                 <td>
-                    <a class="btn btn-primary" data-toggle="collapse" href="#orderDetail{{order.id}}" role="button" aria-expanded="false" aria-controls="orderDetail{{order.id}}">
-                        Подробнее...
+                    <a class="btn btn-primary" data-toggle="collapse" href="#orderDetail{{order.id}}" role="button"
+                       aria-expanded="false" aria-controls="orderDetail{{order.id}}">
+                        More detailed...
                     </a>
                 </td>
 
@@ -59,15 +61,15 @@
                             <table class="table table-hover" cellpadding="0" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <td>Название</td>
-                                    <td>Количество</td>
-                                    <td>Цена</td>
-                                    <td>Сумма</td>
+                                    <td>Name</td>
+                                    <td>Quantity</td>
+                                    <td>Price</td>
+                                    <td>Amount</td>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <td>Итого</td>
+                                    <td>Total</td>
                                     <td></td>
                                     <td>{{order.totalPrice}}</td>
                                     <td></td>
@@ -88,34 +90,34 @@
             </tr>
             </tbody>
         </table>
-        <h3>Фильтр</h3>
+        <h3>Filters</h3>
         <form novalidate ng-submit="fillTable()">
             <div class="form-group row">
                 <div class="form-group col-md-3">
-                    <label for="filterTitle">Название товара</label>
+                    <label for="filterTitle">Product name</label>
                     <input class="form-control" type="text" ng-model="filter.title" id="filterTitle">
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="filterMinPrice">Минимальная цена</label>
+                    <label for="filterMinPrice">Min price</label>
                     <input class="form-control" type="number" ng-model="filter.min_price" id="filterMinPrice">
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="filterMaxPrice">Максимальная цена</label>
+                    <label for="filterMaxPrice">Max price</label>
                     <input class="form-control" type="number" ng-model="filter.max_price" id="filterMaxPrice">
                 </div>
             </div>
             <div>
-                <button class="btn btn-success" type="submit">Применить</button>
+                <button class="btn btn-success" type="submit">Confirm</button>
             </div>
         </form>
 
-        <h3>Список товаров</h3>
+        <h3>Products list</h3>
         <table class="table table-hover" cellpadding="0" cellspacing="0">
             <thead>
             <tr>
                 <td>ID</td>
-                <td>Название</td>
-                <td>Цена</td>
+                <td>Name</td>
+                <td>Price</td>
                 <td></td>
                 <td></td>
             </tr>
@@ -126,10 +128,10 @@
                 <td>{{p.title}}</td>
                 <td>{{p.price}}</td>
                 <td>
-                    <button class="btn btn-primary" ng-click="addToCartById(p.id)">Добавить в корзину</button>
+                    <button class="btn btn-primary" ng-click="addToCartById(p.id)">Add to cart</button>
                 </td>
                 <td>
-                    <button class="btn btn-danger" ng-click="deleteProductById(p.id)">Удалить товар</button>
+                    <button class="btn btn-danger" ng-click="deleteProductById(p.id)">Delete</button>
                 </td>
             </tr>
             </tbody>
@@ -137,42 +139,47 @@
 
         <nav>
             <ul class="pagination">
-                <li ng-class="productsList.first ? 'page-item disabled' : 'page-item'"><a class="page-link" ng-click="changePage(productsList.number-1)"href="">Предыдущая</a></li>
-                <li ng-class="productsList.number==pageIndex ? 'page-item active' : 'page-item'" ng-repeat="pageIndex in paginationArray">
-                    <a id="pagelink-{{$index}}" class="page-link" ng-click="changePage(pageIndex)" href="">{{pageIndex + 1}}</a>
+                <li ng-class="productsList.first ? 'page-item disabled' : 'page-item'"><a class="page-link"
+                                                                                          ng-click="changePage(productsList.number-1)"
+                                                                                          href="">Previous</a></li>
+                <li ng-class="productsList.number==pageIndex ? 'page-item active' : 'page-item'"
+                    ng-repeat="pageIndex in paginationArray">
+                    <a id="pagelink-{{$index}}" class="page-link" ng-click="changePage(pageIndex)" href="">{{pageIndex +
+                        1}}</a>
                 </li>
-                <li ng-class="productsList.last ? 'page-item disabled' : 'page-item'"><a class="page-link" ng-click="changePage(productsList.number+1)" href="">Следующая</a></li>
+                <li ng-class="productsList.last ? 'page-item disabled' : 'page-item'"><a class="page-link"
+                                                                                         ng-click="changePage(productsList.number+1)"
+                                                                                         href="">Next</a></li>
             </ul>
         </nav>
-        <h3>Добавить новый товар</h3>
+        <h3>Add new product</h3>
         <form novalidate ng-submit="submitCreateNewProduct()">
             <div class="form-group col-md-6">
-                <label for="newProductTitle">Название</label>
+                <label for="newProductTitle">Name</label>
                 <input class="form-control" type="text" ng-model="newProduct.title" id="newProductTitle">
             </div>
             <div class="form-group col-md-6">
-                <label for="newProductPrice">Цена</label>
+                <label for="newProductPrice">Price</label>
                 <input class="form-control" type="number" ng-model="newProduct.price" id="newProductPrice">
             </div>
             <div>
-                <button class="btn btn-success" type="submit">Сохранить</button>
+                <button class="btn btn-success" type="submit">Save</button>
             </div>
         </form>
         <div class="container" ng-if="cartList.items.length > 0">
-            <h3>Корзина</h3>
+            <h3>Cart</h3>
             <table class="table table-hover" cellpadding="0" cellspacing="0">
                 <thead>
                 <tr>
-                    <!--            <td>ID</td>-->
-                    <td>Название</td>
-                    <td>Количество</td>
-                    <td>Цена</td>
+                    <td>Name</td>
+                    <td>Quantity</td>
+                    <td>Price</td>
                     <td></td>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <td>Итого</td>
+                    <td>Total</td>
                     <td></td>
                     <td>{{cartList.totalPrice}}</td>
                     <td></td>
@@ -180,28 +187,33 @@
                 </tfoot>
                 <tbody>
                 <tr ng-repeat="oi in cartList.items">
-                    <!--            <td>{{oi.id}}</td>-->
                     <td>{{oi.productTitle}}</td>
                     <td>
                         <div class="input-group md-3" style="width: 120px">
                             <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary" type="button" ng-click="removeFromCartById(oi.id)">-</button>
+                                <button class="btn btn-outline-secondary" type="button"
+                                        ng-click="removeFromCartById(oi.id)">-
+                                </button>
                             </div>
-                            <input readonly type="text" class="form-control" placeholder="" aria-label="" value="{{oi.quantity}}" aria-describedby="basic-addon1">
+                            <input readonly type="text" class="form-control" placeholder="" aria-label=""
+                                   value="{{oi.quantity}}" aria-describedby="basic-addon1">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" ng-click="addToCartById(oi.id)">+</button>
+                                <button class="btn btn-outline-secondary" type="button" ng-click="addToCartById(oi.id)">
+                                    +
+                                </button>
                             </div>
                         </div>
                     </td>
                     <td>{{oi.quantity + ' x ' + oi.pricePerProduct + ' = ' + oi.price}}</td>
                     <td>
-                        <button class="btn btn-secondary" ng-click="removeAllFromCartById(oi.id)">Удалить из корзины</button>
+                        <button class="btn btn-secondary" ng-click="removeAllFromCartById(oi.id)">Delete from cart
+                        </button>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <button class="btn btn-success" ng-click="createOrder()">Оформить заказ</button>
-            <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
+            <button class="btn btn-success" ng-click="createOrder()">Make an order</button>
+            <button class="btn btn-danger" ng-click="clearCart()">Empty cart</button>
         </div>
     </div>
 </div>
