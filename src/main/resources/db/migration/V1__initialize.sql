@@ -3,7 +3,7 @@ create table products (
     title           VARCHAR(255),
     price           int,
     created_at      timestamp default current_timestamp,
-    modified_at     timestamp default current_timestamp
+    updated_at     timestamp default current_timestamp
 );
 
 insert into products (title,price) values

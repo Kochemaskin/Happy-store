@@ -3,6 +3,7 @@ package ru.happy.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,6 +30,6 @@ public class Product {
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    @CreationTimestamp
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 }
