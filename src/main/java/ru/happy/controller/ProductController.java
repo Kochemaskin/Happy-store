@@ -20,10 +20,10 @@ public class ProductController {
     }
 
     /*
-     * GET: http://localhost:8189/products/
-     *      http://localhost:8189/products/?min=51
-     *      http://localhost:8189/products/?max=100
-     *      http://localhost:8189/products/?min=51&max=100
+     * GET: http://localhost:8855/happy/products/
+     *      http://localhost:8855/happy/products/?min=51
+     *      http://localhost:8855/happy/products/?max=100
+     *      http://localhost:8855/happy/products/?min=51&max=100
      */
     @GetMapping("/")
     public List<Product> productList(@RequestParam(value = "min", defaultValue = "0") BigDecimal min,
@@ -32,7 +32,7 @@ public class ProductController {
     }
 
     /*
-     * GET: http://localhost:8189/products/1
+     * GET: http://localhost:8855/happy/products/1
      */
     @GetMapping("/{id}")
     public Product product(@PathVariable Long id) {
