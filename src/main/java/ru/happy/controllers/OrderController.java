@@ -27,11 +27,6 @@ public class OrderController {
         return orderService.findAllOrdersByOwnerName(principal.getName()).stream().map(OrderDto::new).collect(Collectors.toList());
     }
 
-//    @GetMapping("/{id}")
-//    public Optional<OrderDto> getOrders(@PathVariable Integer id, Principal principal) {
-//        return orderService.getOrderDto(id, principal);
-//    }
-
     @PostMapping
     public void addOrderFormCart(@RequestBody DeliveryAddress deliveryAddress, Principal principal) {
         User user = userService.findByUsername(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User not found"));

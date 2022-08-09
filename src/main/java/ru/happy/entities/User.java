@@ -3,9 +3,11 @@ package ru.happy.entities;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.happy.dto.UserDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -42,4 +44,12 @@ public class User {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public User(UserDto userDto){
+        this.username = userDto.getUsername();
+        this.password = userDto.getPassword();
+        this.alias = userDto.getAlias();
+        this.email = userDto.getEmail();
+        this.roles = new ArrayList<>();
+    }
 }

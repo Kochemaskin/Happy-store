@@ -153,6 +153,14 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             });
     };
 
+    $scope.tryToRegister = function () {
+        $http.post(rootPath + '/auth/register', this.newUser)
+            .then(function successCallback(response) {
+                 window.alert("Registered, log in please") {
+                window.alert("Error");
+            });
+    };
+
     $scope.getUserAlias = function () {
         $http.get(rootPath + '/auth/alias')
             .then(function (response) {

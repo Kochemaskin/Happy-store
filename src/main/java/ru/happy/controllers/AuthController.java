@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.happy.beans.JwtTokenUtil;
 import ru.happy.dto.JwtRequest;
 import ru.happy.dto.JwtResponse;
+import ru.happy.dto.UserDto;
 import ru.happy.dto.UserInfoDto;
 import ru.happy.exceptions.MarketError;
 import ru.happy.services.UserService;
@@ -41,5 +42,15 @@ public class AuthController {
     @GetMapping("/alias")
     public UserInfoDto getUserName(Principal principal) {
         return new UserInfoDto(userService.getAliasByUserName(principal.getName()));
+    }
+
+    @PostMapping("/registration")
+    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto){
+        try {
+            userService.registerNewUser(userDto);
+            return ResponseEntity.ok(HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new MarketError(HttpStatus.BAD_REQUEST.value(), "Username or email already taken"), HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -30,6 +30,23 @@
             <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
             <p class="mt-5 mb-3 text-muted">2022</p>
         </form>
+        <form class="form-signin" ng-submit="tryToRegister()" style="max-width: 350px; padding: 15px; margin: 0 auto;">
+            <h1 class="h3 mb-3 font-weight-normal">Registration</h1>
+            <label for="regAlias" class="sr-only">Full name</label>
+            <input type="text" ng-model="newUser.alias" id="regAlias" class="form-control"
+                   placeholder="Enter your full name" style="margin-bottom: 10px;" required="">
+            <label for="regUsername" class="sr-only">login</label>
+            <input type="text" ng-model="newUser.username" id="regUsername" class="form-control"
+                   placeholder="Enter your login" style="margin-bottom: 10px;" required="">
+            <label for="regPassword" class="sr-only">Password</label>
+            <input type="password" ng-model="newUser.password" id="regPassword" class="form-control" placeholder="Password"
+                   style="margin-bottom: 10px;" required="">
+            <label for="regEmail" class="sr-only">Email</label>
+            <input type="email" ng-model="newUser.email" id="regEmail" class="form-control" placeholder="Email"
+                   style="margin-bottom: 10px;" required="">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+            <p class="mt-5 mb-3 text-muted">2022</p>
+        </form>
     </div>
     <div ng-show="authorized">
         <p>Welcome: {{userInfo.alias}}</p>
