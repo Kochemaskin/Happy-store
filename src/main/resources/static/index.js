@@ -120,7 +120,7 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
     };
 
     $scope.createOrder = function () {
-        $http.post(apiPath + '/orders')
+        $http.post(apiPath + '/orders', this.orderDelivery)
             .then(function (response) {
 //                $scope.newProduct = null;
                 $scope.fillOrders();
@@ -156,7 +156,8 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
     $scope.tryToRegister = function () {
         $http.post(rootPath + '/auth/register', this.newUser)
             .then(function successCallback(response) {
-                 window.alert("Registered, log in please") {
+                 window.alert("registered, please log in.");
+            }, function errorCallback(response) {
                 window.alert("Error");
             });
     };
@@ -165,7 +166,6 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         $http.get(rootPath + '/auth/alias')
             .then(function (response) {
                 $scope.userInfo = response.data;
-//                $scope.fillTable();
             });
 
     }

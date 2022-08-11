@@ -1,6 +1,7 @@
 package ru.happy.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import ru.happy.dto.UserDto;
@@ -13,6 +14,7 @@ import java.util.Collection;
 @Entity
 @Data
 @Table(name = "users")
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -23,7 +23,7 @@ public class Product {
     private String title;
 
     @Column(name = "price")
-    private Integer price;
+    private int price;
 
     @Column(name = "created_at")
     @CreationTimestamp

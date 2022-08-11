@@ -1,9 +1,9 @@
-create table products (
+CREATE TABLE products (
     id              bigserial primary key,
     title           VARCHAR(255),
     price           int,
     created_at      timestamp default current_timestamp,
-    updated_at     timestamp default current_timestamp
+    updated_at      timestamp default current_timestamp
 );
 
 insert into products (title,price) values
