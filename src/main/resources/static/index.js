@@ -122,7 +122,6 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
     $scope.createOrder = function () {
         $http.post(apiPath + '/orders', this.orderDelivery)
             .then(function (response) {
-//                $scope.newProduct = null;
                 $scope.fillOrders();
                 $scope.fillCart();
             });
