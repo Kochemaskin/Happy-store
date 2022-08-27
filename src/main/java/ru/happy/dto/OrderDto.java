@@ -19,9 +19,9 @@ public class OrderDto {
 
     public OrderDto(Order order) {
         this.id = order.getId();
+        this.totalPrice = order.getPrice();
+        this.delivery_address = order.getDelivery_address();
+        this.creationDateTime = order.getCreatedAt().toString();
         this.items = order.getItems().stream().map(OrderItemDto::new).collect(Collectors.toList());
-        for (OrderItemDto item : this.items) {
-        totalPrice += item.getPricePerProduct() * item.getQuantity();
-        }
     }
 }

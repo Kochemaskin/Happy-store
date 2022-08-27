@@ -2,7 +2,7 @@ package ru.happy.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.happy.beans.Cart;
+import ru.happy.entities.Cart;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,14 +11,11 @@ import java.util.stream.Collectors;
 @Data
 public class CartDto {
 
-        private List<OrderItemDto> items;
-        private int totalPrice;
+    private List<CartItemDto> items;
+    private int totalPrice;
 
-        public CartDto(Cart cart) {
-            this.totalPrice = cart.getTotalPrice();
-            this.items = cart.getItems()
-                    .stream()
-                    .map(OrderItemDto::new)
-                    .collect(Collectors.toList());
-        }
+    public CartDto(Cart cart) {
+        this.totalPrice = cart.getPrice();
+        this.items = cart.getItems().stream().map(CartItemDto::new).collect(Collectors.toList());
     }
+}

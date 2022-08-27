@@ -2,7 +2,6 @@ package ru.happy.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.happy.beans.DeliveryAddress;
 import ru.happy.dto.OrderDto;
 import ru.happy.entities.User;
 import ru.happy.exceptions.ResourceNotFoundException;
@@ -11,6 +10,7 @@ import ru.happy.services.UserService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -27,10 +27,15 @@ public class OrderController {
         return orderService.findAllOrdersByOwnerName(principal.getName()).stream().map(OrderDto::new).collect(Collectors.toList());
     }
 
-    @PostMapping
-    public void addOrderFormCart(@RequestBody DeliveryAddress deliveryAddress, Principal principal) {
+    @GetMapping("/{id}")
+    public OrderDto getOrderDtoById(@PathVariable Long id, Principal principal) {
+        return orderService.findOrderDtoById(id, principal);
+    }
+
+    @PostMapping("/{uuid}")
+    public OrderDto addOrderFormCart(@PathVariable UUID uuid, @RequestParam String address, Principal principal) {
         User user = userService.findByUsername(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        orderService.createOrderFormCart(user, deliveryAddress);
+        return new OrderDto(orderService.createOrderFormCart(user, address, uuid));
     }
 
 }
