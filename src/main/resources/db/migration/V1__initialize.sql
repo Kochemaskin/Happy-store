@@ -6,7 +6,7 @@ CREATE TABLE products (
     updated_at      timestamp default current_timestamp
 );
 
-insert into products (title,price) values
+INSERT INTO products (title,price) values
         ('bread',100),
         ('cheese',320),
         ('milk',65),

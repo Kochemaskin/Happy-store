@@ -1,164 +1,120 @@
-angular.module('app', []).controller('indexController', function ($scope, $http) {
-    const apiPath = 'http://localhost:8855/happy/api/v1';
-    const rootPath = 'http://localhost:8855/happy';
-    let $currentPage=0;
-    let $viewCount;
+(function ($localStorage) {
+    'use strict';
 
-    $scope.fillTable = function () {
-        $http({
-            url: apiPath + '/products',
-            method: 'GET',
-            params: {
-                title: $scope.filter ? $scope.filter.title : null,
-                min_price: $scope.filter ? $scope.filter.min_price : null,
-                max_price: $scope.filter ? $scope.filter.max_price : null,
-                page: $currentPage ? $currentPage : 0,
-                count: $viewCount ? $viewCount : 3
+    angular
+        .module('app', ['ngRoute', 'ngStorage'])
+        .config(config)
+        .run(run);
 
-            }
-        }).then(function (response) {
-            $scope.productsList = response.data;
+    function config($routeProvider, $httpProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'home/home.html',
+                controller: 'homeController'
+            })
+            .when('/products', {
+                templateUrl: 'products/products.html',
+                controller: 'productsController'
+            })
+            .when('/cart', {
+                templateUrl: 'cart/cart.html',
+                controller: 'cartController'
+            })
+            .when('/order_confirmation', {
+                templateUrl: 'order_confirmation/order_confirmation.html',
+                controller: 'orderConfirmationController'
+            })
+            .when('/order_result/:orderId', {
+                templateUrl: 'order_result/order_result.html',
+                controller: 'orderResultController'
+            })
+            .when('/orders', {
+                templateUrl: 'orders/orders.html',
+                controller: 'ordersController'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
 
-            let minPageIndex = $currentPage - 2;
-            if (minPageIndex < 0) {
-                minPageIndex = 0;
-            }
-
-            let maxPageIndex = $currentPage + 2;
-            if (maxPageIndex > $scope.productsList.totalPages-1) {
-                maxPageIndex = $scope.productsList.totalPages-1;
-            }
-
-            $scope.paginationArray = $scope.generatePagesIndexes(minPageIndex, maxPageIndex);
-
-        });
-    };
-
-    $scope.generatePagesIndexes = function(startPage, endPage) {
-        let arr = [];
-        for (let i = startPage; i < endPage+1; i++) {
-            arr.push(i);
-        }
-        return arr;
     }
 
-    $scope.submitCreateNewProduct = function () {
-        $http.post(apiPath + '/products', $scope.newProduct)
-            .then(function (response) {
-                $scope.newProduct = null;
-                $scope.fillTable();
-            });
-    };
+    function run($rootScope, $http, $localStorage) {
+        if ($localStorage.currentUser) {
+            $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.currentUser.token;
+        }
+            $http({
+                url: 'http://localhost:8855/happy/api/v1/cart',
+                method: 'POST',
 
-    $scope.deleteProductById = function (id) {
-        $http({
-            url: apiPath + '/products',
-            method: 'DELETE',
-            params: {
-                id: id
+            }).then(function (response) {
+                $localStorage.cartUUID = response.data;
+            })
+    }
+})();
 
-            }
-        }).then(function (response) {
-            $scope.fillTable();
-        });
-    };
-
-    $scope.changePage = function (page) {
-        $currentPage = page;
-        $viewCount = 3;
-        $scope.fillTable();
-    };
-
-    $scope.fillCart = function() {
-        $http({
-            url: apiPath + '/cart',
-            method: 'GET',
-
-        }).then(function (response) {
-            $scope.cartList = response.data;
-        })
-    };
-
-    $scope.addToCartById = function (id) {
-        $http({
-            url: apiPath + '/cart/add/' + id,
-            method: 'GET',
-
-        }).then(function (response) {
-            $scope.fillCart();
-        })
-    };
-
-    $scope.removeFromCartById = function (id) {
-        $http({
-            url: apiPath + '/cart/delete/' + id,
-            method: 'GET',
-
-        }).then(function (response) {
-            $scope.fillCart();
-        })
-    };
-
-    $scope.removeAllFromCartById = function (id) {
-        $http({
-            url: apiPath + '/cart/delete/all/' + id,
-            method: 'GET',
-
-        }).then(function (response) {
-            $scope.fillCart();
-        })
-    };
-
-    $scope.clearCart = function () {
-        $http({
-            url: apiPath + '/cart/clear',
-            method: 'GET',
-
-        }).then(function (response) {
-            $scope.fillCart();
-        })
-    };
-
-    $scope.createOrder = function () {
-        $http.post(apiPath + '/orders', this.orderDelivery)
-            .then(function (response) {
-                $scope.fillOrders();
-                $scope.fillCart();
-            });
-    };
-
-    $scope.fillOrders = function () {
-        $http.get(apiPath + '/orders')
-            .then(function (response) {
-                $scope.orderList = response.data;
-
-            });
-    };
+angular.module('app').controller('indexController', function ($scope, $rootScope, $http, $localStorage) {
+    const contextPath = 'http://localhost:8855/happy';
+    const rootPath = 'http://localhost:8855/happy';
 
     $scope.tryToAuth = function () {
-        $http.post(rootPath + '/auth', $scope.user)
+
+        $scope.user.cartUuid = $localStorage.cartUUID;
+
+        $http.post(contextPath + '/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $localStorage.currentUser = {username: $scope.user.username, token: response.data.token};
+
+                    $scope.currentUserName = $scope.user.username;
+                    $scope.getUserAlias();
+
                     $scope.user.username = null;
                     $scope.user.password = null;
-                    $scope.authorized = true;
-                    $scope.fillTable();
-                    $scope.fillOrders();
-                    $scope.getUserAlias();
+
+                    $rootScope.$broadcast('logInOut', {
+                        upUUID: $localStorage.cartUUID // посылайте что хотите
+                    });
                 }
             }, function errorCallback(response) {
-                window.alert("Error");
             });
     };
 
-    $scope.tryToRegister = function () {
-        $http.post(rootPath + '/auth/register', this.newUser)
-            .then(function successCallback(response) {
-                 window.alert("registered, please log in.");
-            }, function errorCallback(response) {
-                window.alert("Error");
+    $scope.tryToLogout = function () {
+        $scope.clearUser();
+
+        if ($scope.user.username) {
+            $scope.user.username = null;
+        }
+        if ($scope.user.password) {
+            $scope.user.password = null;
+        }
+
+        $http({
+            url: 'http://localhost:8855/happy/api/v1/cart',
+            method: 'POST',
+
+        }).then(function (response) {
+            $localStorage.cartUUID = response.data;
+            $rootScope.$broadcast('logInOut', {
+                upUUID: $localStorage.cartUUID // посылайте что хотите
             });
+        })
+
+
+    };
+
+    $scope.clearUser = function () {
+        delete $localStorage.currentUser;
+        $http.defaults.headers.common.Authorization = '';
+    };
+
+    $scope.isUserLoggedIn = function () {
+        if ($localStorage.currentUser) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
     $scope.getUserAlias = function () {
@@ -168,5 +124,4 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             });
 
     }
-
 });

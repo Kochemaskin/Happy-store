@@ -43,7 +43,10 @@ public class AspectProfiler {
             count++;
         }
         methodMap.put(methodName, count);
-        Map.Entry<String, Integer> maxEntry = methodMap.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get();
+        Map.Entry<String, Integer> maxEntry = methodMap.entrySet()
+                .stream()
+                .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
+                .get();
         log.info("Max use method: " + maxEntry.getKey() + "; Use count: " + maxEntry.getValue());
     }
 
@@ -55,7 +58,10 @@ public class AspectProfiler {
         long duration = end - start;
         methodTimeMap.put(proceedingJoinPoint.getSignature().toString(), duration);
 
-        Map.Entry<String, Long> maxEntry = methodTimeMap.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get();
+        Map.Entry<String, Long> maxEntry = methodTimeMap.entrySet()
+                .stream()
+                .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
+                .get();
         log.info("Method longer time: " + maxEntry.getKey() + "; Time: " + maxEntry.getValue() + " ms");
         return result;
     }
