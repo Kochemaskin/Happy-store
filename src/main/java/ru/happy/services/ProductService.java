@@ -10,6 +10,8 @@ import ru.happy.dto.ProductDto;
 import ru.happy.entities.Product;
 import ru.happy.repositories.ProductRepository;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +32,10 @@ public class ProductService {
     public Page<ProductDto> getProductPage(Specification<Product> spec, int page, int count) {
         return productRepository.findAll(spec, PageRequest.of(page, count)).map(ProductDto::new);
 
+    }
+
+    public List<Product> getAllProducts() {
+        return Collections.unmodifiableList(productRepository.findAll());
     }
 
     public ProductDto saveOrUpdate(ProductDto productDto) {

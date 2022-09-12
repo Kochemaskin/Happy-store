@@ -1,0 +1,48 @@
+<h3>Cart</h3>
+<p ng-show="cartList.items.length == 0">Cart is empty</p>
+<table ng-show="cartList.items.length > 0" class="table table-hover" cellpadding="0" cellspacing="0">
+    <thead>
+    <tr>
+        <td>Title</td>
+        <td>Quantity</td>
+        <td>Price</td>
+        <td></td>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <td>Total</td>
+        <td></td>
+        <td>{{cartList.totalPrice}}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td clospan="4">
+            <button ng-show="!isUserLoggedIn()" class="btn btn-primary" ng-click="goToOrderSubmit()">Proceed to checkout</button>
+            <button class="btn btn-danger" ng-click="clearCart()">Empty cart</button>
+
+        </td>
+    </tr>
+    </tfoot>
+    <tbody>
+    <tr ng-repeat="oi in cartList.items">
+        <td>{{oi.productTitle}}</td>
+        <td>
+            <div class="input-group md-3" style="width: 120px">
+                <div class="input-group-prepend">
+                    <button class="btn btn-outline-secondary" type="button" ng-click="removeFromCartById(oi.id)">-</button>
+                </div>
+                <input readonly type="text" class="form-control" placeholder="" aria-label="" value="{{oi.quantity}}" aria-describedby="basic-addon1">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" ng-click="addToCartById(oi.id)">+</button>
+                </div>
+            </div>
+        </td>
+        <td>{{oi.quantity + ' x ' + oi.pricePerProduct + ' = ' + oi.price}}</td>
+        <td>
+            <button class="btn btn-secondary" ng-click="removeAllFromCartById(oi.id)">Delete from cart</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>

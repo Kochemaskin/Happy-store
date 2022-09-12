@@ -1,43 +1,53 @@
 package ru.happy.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.happy.beans.Cart;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 import ru.happy.dto.CartDto;
+import ru.happy.services.CartService;
+
+import java.security.Principal;
+import java.util.UUID;
 
 
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
+@Slf4j
 public class CartController {
 
-    private final Cart cart;
+    private final CartService cartService;
 
-    @GetMapping
-    public CartDto getCart() {
-        return new CartDto(cart);
+    @PostMapping
+    public UUID getNewUUIDCart(Principal principal) {
+        if (principal == null) {
+            return cartService.getCartForUser(null, null);
+        }
+        return cartService.getCartForUser(principal.getName(), null);
     }
 
-    @GetMapping("/add/{id}")
-    public void addToCart(@PathVariable Long id) {
-        cart.addToCart(id);
+    @GetMapping("{uuid}")
+    public CartDto getCartDto(@PathVariable UUID uuid) {
+        return new CartDto(cartService.findById(uuid).get());
     }
 
-    @GetMapping("/delete/{id}")
-    public void delProductById(@PathVariable Long id) {
-        cart.removeFromCart(id);
+    @GetMapping("{uuid}/add/{id}")
+    public void addToUUIDCart(@PathVariable UUID uuid, @PathVariable(name = "id") Long productId) {
+        cartService.addProductToCart(uuid, productId);
     }
 
-    @GetMapping("/delete/all/{id}")
-    public void delAllProductById(@PathVariable Long id) {
-        cart.removeAllProductFromCartById(id);
+    @GetMapping("{uuid}/delete/{id}")
+    public void delItemFromUUIDCart(@PathVariable UUID uuid, @PathVariable(name = "id") Long productId) {
+        cartService.removeFromCart(uuid, productId);
     }
 
-    @GetMapping("/clear")
-    public void clearCart() {
-        cart.clear();
+    @GetMapping("{uuid}/delete/all/{id}")
+    public void delAllItemFromUUIDCart(@PathVariable UUID uuid, @PathVariable(name = "id") Long productId) {
+        cartService.deleteFromCart(uuid, productId);
+    }
+
+    @GetMapping("/{uuid}/clear")
+    public void clearCart(@PathVariable UUID uuid) {
+        cartService.clear(uuid);
     }
 }

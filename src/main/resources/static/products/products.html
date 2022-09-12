@@ -1,0 +1,70 @@
+<h3>Filter</h3>
+<form novalidate ng-submit="fillTable()">
+    <div class="form-group row">
+        <div class="form-group col-md-3">
+            <label for="filterTitle">Product title</label>
+            <input class="form-control" type="text" ng-model="filter.title" id="filterTitle">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="filterMinPrice">Min price</label>
+            <input class="form-control" type="number" ng-model="filter.min_price" id="filterMinPrice">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="filterMaxPrice">Max price</label>
+            <input class="form-control" type="number" ng-model="filter.max_price" id="filterMaxPrice">
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-success" type="submit">Confirm</button>
+    </div>
+</form>
+
+<h3>Product list</h3>
+<table class="table table-hover" cellpadding="0" cellspacing="0">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Title</td>
+        <td>Price</td>
+        <td></td>
+        <td></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="p in productsList.content">
+        <td>{{p.id}}</td>
+        <td>{{p.title}}</td>
+        <td>{{p.price}}</td>
+        <td>
+            <button class="btn btn-primary" ng-click="addToCartById(p.id)">Add to the cart</button>
+        </td>
+        <td>
+            <button class="btn btn-danger" ng-click="deleteProductById(p.id)">Delete product</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination">
+        <li ng-class="productsList.first ? 'page-item disabled' : 'page-item'"><a class="page-link" ng-click="changePage(productsList.number-1)"href="">Previous</a></li>
+        <li ng-class="productsList.number==pageIndex ? 'page-item active' : 'page-item'" ng-repeat="pageIndex in paginationArray">
+            <a id="pagelink-{{$index}}" class="page-link" ng-click="changePage(pageIndex)" href="">{{pageIndex + 1}}</a>
+        </li>
+        <li ng-class="productsList.last ? 'page-item disabled' : 'page-item'"><a class="page-link" ng-click="changePage(productsList.number+1)" href="">Next</a></li>
+    </ul>
+</nav>
+<h3>Add new product</h3>
+<form novalidate ng-submit="submitCreateNewProduct()">
+    <div class="form-group col-md-6">
+        <label for="newProductTitle">Title</label>
+        <input class="form-control" type="text" ng-model="newProduct.title" id="newProductTitle">
+    </div>
+    <div class="form-group col-md-6">
+        <label for="newProductPrice">Price</label>
+        <input class="form-control" type="number" ng-model="newProduct.price" id="newProductPrice">
+    </div>
+    <div>
+        <button class="btn btn-success" type="submit">Save</button>
+    </div>
+</form>

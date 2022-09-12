@@ -7,7 +7,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import ru.happy.dto.ProductDto;
 import ru.happy.exceptions.ResourceNotFoundException;
-import ru.happy.repositories.specifications.ProductSpecifications;
+import ru.happy.repositories.specifications.ProductSpecification;
 import ru.happy.services.ProductService;
 
 @RestController
@@ -22,7 +22,7 @@ public class ProductController {
                                            @RequestParam(defaultValue = "0", name = "page") Integer page,
                                            @RequestParam(defaultValue = "3", name = "count") Integer count) {
 
-        return productService.getProductPage(ProductSpecifications.build(params), page, count);
+        return productService.getProductPage(ProductSpecification.build(params), page, count);
     }
 
     @PostMapping
@@ -32,8 +32,12 @@ public class ProductController {
     }
 
     @PutMapping
-    public ProductDto modifiedProduct(@RequestBody ProductDto productDto) {
-        return productService.saveOrUpdate(productDto);
+    public ProductDto updatedProduct(@RequestBody ProductDto productDto) {
+        if (productDto.getId() != null) {
+            productService.getProductById(productDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Product by ID: " + productDto.getId() + " not found"));
+            return productService.saveOrUpdate(productDto);
+        }
+        return addProduct(productDto);
     }
 
     @GetMapping("/{id}")
