@@ -46,7 +46,7 @@ public class ProductController {
     }
 
     /*
-     * POST: http://localhost:8189/products/
+     * POST: http://localhost:8855/products/
      * BODY:
      *       {
      *          "name": "Waterlemon",
@@ -61,7 +61,7 @@ public class ProductController {
     }
 
     /*
-     * PUT: http://localhost:8189/products/
+     * PUT: http://localhost:8855/products/
      * BODY:
      *       {
      *          "id": 5,
@@ -77,7 +77,7 @@ public class ProductController {
     }
 
     /*
-     * DELETE: http://localhost:8189/products/5
+     * DELETE: http://localhost:8855/products/5
      */
     @DeleteMapping("/{id}")
     public Product delProduct(@PathVariable Long id) {
